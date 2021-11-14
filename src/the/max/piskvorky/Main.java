@@ -78,62 +78,119 @@ public class Main {
     public boolean checkWin() {
         HashMap<Type, ArrayList<Field>> map = new HashMap<Type, ArrayList<Field>>();
 
+        boolean horizontal = false, vertical = false, a = false, b = true;
+
         for (Type t : Type.values())
             if (t != Type.NONE)
                 map.put(t, new ArrayList<Field>());
 
         //horizontal
-        for (int y = 1; y <= rows; y++) {
-            for (int x = 1; x <= rows; x++) {
-                Field f = getField(x, y);
-                if (f != null) {
-                    if (f.type == Type.NONE)
-                        for (Type t : map.keySet())
-                            map.get(t).clear();
-                    else {
-                        map.get(f.type).add(f);
-                        for (Type t : map.keySet())
-                            if (t != f.type)
-                                map.get(t).clear();
-                        if (map.get(f.type).size() >= 5) {
-                            System.out.println("WIN - " + f.type + " - " + f.x + ", " + f.y);
-                            return true;
-                        }
-                    }
-                }
-            }
-            for (Type t : map.keySet())
-                map.get(t).clear();
-        }
-
-        for (Type t : map.keySet())
-            map.get(t).clear();
-        //vertikalni
-        for (int x = 1; x <= rows; x++) {
+        if (horizontal) {
             for (int y = 1; y <= rows; y++) {
-                Field f = getField(x, y);
-                if (f != null) {
-                    if (f.type == Type.NONE)
-                        for (Type t : map.keySet())
-                            map.get(t).clear();
-                    else {
-                        map.get(f.type).add(f);
-                        for (Type t : map.keySet())
-                            if (t != f.type)
+                for (int x = 1; x <= rows; x++) {
+                    Field f = getField(x, y);
+                    if (f != null) {
+                        if (f.type == Type.NONE)
+                            for (Type t : map.keySet())
                                 map.get(t).clear();
-                        if (map.get(f.type).size() >= 5) {
-                            System.out.println("WIN - " + f.type + " - " + f.x + ", " + f.y);
-                            return true;
+                        else {
+                            map.get(f.type).add(f);
+                            for (Type t : map.keySet())
+                                if (t != f.type)
+                                    map.get(t).clear();
+                            if (map.get(f.type).size() >= 5) {
+                                System.out.println("WIN - HORIZONTAL - " + f.type + " - " + f.x + ", " + f.y);
+                                return true;
+                            }
                         }
                     }
                 }
+                for (Type t : map.keySet())
+                    map.get(t).clear();
             }
-            for (Type t : map.keySet())
-                map.get(t).clear();
         }
 
         for (Type t : map.keySet())
             map.get(t).clear();
+
+        //vertikalni
+        if (vertical) {
+            for (int x = 1; x <= rows; x++) {
+                for (int y = 1; y <= rows; y++) {
+                    Field f = getField(x, y);
+                    if (f != null) {
+                        if (f.type == Type.NONE)
+                            for (Type t : map.keySet())
+                                map.get(t).clear();
+                        else {
+                            map.get(f.type).add(f);
+                            for (Type t : map.keySet())
+                                if (t != f.type)
+                                    map.get(t).clear();
+                            if (map.get(f.type).size() >= 5) {
+                                System.out.println("WIN - VERTICAL - " + f.type + " - " + f.x + ", " + f.y);
+                                return true;
+                            }
+                        }
+                    }
+                }
+                for (Type t : map.keySet())
+                    map.get(t).clear();
+            }
+        }
+
+        for (Type t : map.keySet())
+            map.get(t).clear();
+
+        //a
+        if (a) {
+            for (int y = 1; y <= rows; y++) {
+                for (int x = 1; x <= rows; x++) {
+                    Field f = getField(x, y);
+                    if (f != null) {
+                        if (f.type != Type.NONE) {
+                            boolean check = true;
+                            for (int i = 1; i <= 4; i++) {
+                                Field newField = getField(x + i, y + i);
+                                if (newField != null) {
+                                    if (newField.type != f.type) {
+                                        check = false;
+                                    } else if (i == 4 && check) {
+                                        System.out.println("WIN - A - " + f.type + " - " + f.x + ", " + f.y);
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        //b
+        if (b) {
+            for (int y = 1; y <= rows; y++) {
+                for (int x = 1; x <= rows; x++) {
+                    Field f = getField(x, y);
+                    if (f != null) {
+                        if (f.type != Type.NONE) {
+                            boolean check = true;
+                            for (int i = 1; i <= 4; i++) {
+                                Field newField = getField(x - i, y - i);
+                                if (newField != null) {
+                                    if (newField.type != f.type) {
+                                        check = false;
+                                    } else if (i == 4 && check) {
+                                        System.out.println("WIN - B - " + f.type + " - " + f.x + ", " + f.y);
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         return false;
     }
