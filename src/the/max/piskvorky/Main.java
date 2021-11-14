@@ -11,7 +11,7 @@ public class Main {
 
     public ArrayList<Field> fields = new ArrayList<Field>();
 
-    public Integer rows = 15;
+    public Integer rows = 50;
 
     public static void main(String[] args) {
         Main m = new Main();
@@ -27,6 +27,7 @@ public class Main {
     public void simulate() {
         ArrayList<Field> simulateFields = (ArrayList<Field>) fields.clone();
         Type typeX = Type.X, typeO = Type.O;
+        int counts = 0;
         while (!checkWin()) {
             Field f = simulateFields.get(r.nextInt(simulateFields.size()));
             Type actual = Type.O;
@@ -34,7 +35,9 @@ public class Main {
                 actual = Type.X;
             f.type = actual;
             simulateFields.remove(f);
+            counts ++;
         }
+        System.out.println("Counts: " + counts);
         draw();
     }
 
@@ -50,7 +53,7 @@ public class Main {
     public void draw() {
         for (Field f : fields) {
             System.out.print(f.type.toString());
-            if (f.x % 15 == 0)
+            if (f.x % rows == 0)
                 System.out.println("");
             else
                 System.out.print(" ");
@@ -78,7 +81,7 @@ public class Main {
     public boolean checkWin() {
         HashMap<Type, ArrayList<Field>> map = new HashMap<Type, ArrayList<Field>>();
 
-        boolean horizontal = false, vertical = false, a = false, b = true;
+        boolean horizontal = true, vertical = true, a = true, b = true;
 
         for (Type t : Type.values())
             if (t != Type.NONE)
