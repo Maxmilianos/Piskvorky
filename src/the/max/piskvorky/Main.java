@@ -81,7 +81,7 @@ public class Main {
     public boolean checkWin() {
         HashMap<Type, ArrayList<Field>> map = new HashMap<Type, ArrayList<Field>>();
 
-        boolean horizontal = true, vertical = true, a = true, b = true;
+        boolean horizontal = false, vertical = false, a = false, b = true;
 
         for (Type t : Type.values())
             if (t != Type.NONE)
@@ -170,6 +170,9 @@ public class Main {
             }
         }
 
+        for (Type t : map.keySet())
+            map.get(t).clear();
+
         //b
         if (b) {
             for (int y = 1; y <= rows; y++) {
@@ -179,7 +182,7 @@ public class Main {
                         if (f.type != Type.NONE) {
                             boolean check = true;
                             for (int i = 1; i <= 4; i++) {
-                                Field newField = getField(x - i, y - i);
+                                Field newField = getField(x - i, y + i);
                                 if (newField != null) {
                                     if (newField.type != f.type) {
                                         check = false;
